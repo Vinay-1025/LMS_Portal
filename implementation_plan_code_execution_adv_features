@@ -1,0 +1,57 @@
+# Implementation Plan - Proctored Coding Labs: Competitive & Secure
+
+This plan outlines the steps to upgrade the Coding Labs into a professional, proctored competitive programming environment, featuring automated verification and comprehensive anti-cheating tracking.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Anti-Cheat Restrictions**: We will implement hard blocks on **copying/pasting** and real-time detection of **tab switching**. 
+> **Incident Logging**: Every time a student switches tabs or attempts a copy-paste, an "incident" will be logged with a timestamp and sent to the server. Tutors will see a "Proctoring Report" alongside the student's code.
+
+## Proposed Changes
+
+### [Backend] Data Schema Updates [MODIFY]
+#### [Lab.js](file:///c:/Users/Az/Desktop/LMS/server/models/Lab.js)
+*   Add `testCases`: (Array of `{ input: string, expected: string, isHidden: boolean }`).
+*   Add `isProctored: boolean` toggle.
+
+#### [Workspace.js](file:///c:/Users/Az/Desktop/LMS/server/models/Workspace.js) (or new LabSubmission model)
+*   Add `status`: ('Draft', 'Solved', 'Late').
+*   Add `incidents`: (Array of `{ type: string, timestamp: Date, details: string }`).
+
+### [Backend] API Updates [MODIFY]
+#### [Lab Controller](file:///c:/Users/Az/Desktop/LMS/server/controllers/labController.js)
+*   `submitLab`: Verifies test cases and finalized the workspace status.
+*   `logIncident`: New endpoint to record anti-cheat violations in real-time.
+*   `getLabResults`: (Tutor Only) Fetch all student submissions, code, and incident logs.
+
+### [Frontend] IDE Enhancements [MODIFY] [CodingLabs.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/pages/CodingLabs.jsx)
+*   **Proctoring Engine**:
+    *   `Visibility API`: Detect and alert on tab switches.
+    *   `Clipboard API`: Intercept and block Copy/Paste/Cut.
+    *   `Security Banner`: Informs students that proctoring is active.
+*   **Test Results UI**: "Test Cases" tab in the console showing pass/fail status.
+*   **Submit Flow**: Validates all cases and shows a success summary.
+
+### [Frontend] Tutor View [NEW] [LabReview.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/pages/LabReview.jsx)
+*   Detailed view for instructors to see:
+    *   Student Code (Read-only Monaco view).
+    *   Execution Status (Passed X/Y tests).
+    *   **Proctoring Timeline**: A log of every tab switch and cheat attempt.
+
+## Open Questions
+
+1.  **Grace Period**: Should we allow a specific number of tab switches (e.g., 3) before flagging, or log every single one?
+    *   *Recommendation*: Log every single one but only show a "Warning" to the student.
+2.  **Full-Screen Requirement**: Should we force the browser into full-screen mode for proctored labs?
+    *   *Recommendation*: Yes, as exit from full-screen is a strong signal of distraction.
+
+## Verification Plan
+
+### Automated Tests
+1.  **Incident Beacon**: Simulate a tab switch and verify the backend records the event correctly.
+2.  **Security Guard**: Verify that `Ctrl+V` and right-click paste are successfully neutralized in the editor.
+
+### Manual Verification
+1.  **Tutor Audit**: Use a student account to "cheat" (switch tabs), then log in as a tutor to verify the incidents appear in the report.
+2.  **End-to-End**: Run the full "Fibonacci" submission flow with proctoring active.

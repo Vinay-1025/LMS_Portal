@@ -1,0 +1,115 @@
+:root {
+  /* Dark Theme (Default from Docs) */
+  --bg: #0a0d14;
+  --bg2: #0f1320;
+  --bg3: #141826;
+  --border: #1e2535;
+  --accent: #4f8ef7;
+  --accent2: #7c5ef7;
+  --accent3: #f76e4f;
+  --accent4: #4ff7b8;
+  --accent5: #f7c84f;
+  --text: #e8eaf0;
+  --text2: #8b92a8;
+  --text3: #5a607a;
+  --student: #4ff7b8;
+  --tutor: #4f8ef7;
+  --mgmt: #f76e4f;
+  --outsider: #f7c84f;
+  --admin: #c47af7;
+  --card: #131829;
+  --card-border: #1e2a40;
+
+  --transition: all 0.3s ease;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  --glass: rgba(20, 24, 38, 0.7);
+}
+
+[data-theme='light'] {
+  --bg: #f8fafc;
+  --bg2: #ffffff;
+  --bg3: #f1f5f9;
+  --border: #e2e8f0;
+  --accent: #3b82f6;
+  --accent2: #6366f1;
+  --accent3: #ef4444;
+  --accent4: #10b981;
+  --accent5: #f59e0b;
+  --text: #1e293b;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --student: #10b981;
+  --tutor: #3b82f6;
+  --mgmt: #f97316;
+  --outsider: #f59e0b;
+  --admin: #8b5cf6;
+  --card: #ffffff;
+  --card-border: #e2e8f0;
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --glass: rgba(255, 255, 255, 0.8);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: var(--transition);
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text3);
+}
+
+/* Layout Utilities */
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.premium-btn {
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.premium-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(79, 142, 247, 0.3);
+}

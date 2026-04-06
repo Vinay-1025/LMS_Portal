@@ -1,0 +1,58 @@
+# Implementation Plan - Phase 5: Interactive Coding Labs
+
+This plan covers the development of a state-of-the-art coding environment within the LMS, providing students with an immersive development experience.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Code Execution**: For multi-language support (Python, Java, etc.), we will use the **Piston API** (a free, industrial-grade execution engine). JavaScript will be executed locally in a secure sandbox for instant feedback.
+> **Dependency Installation**: This phase requires installing `@monaco-editor/react`. Please confirm you are okay with this additional package.
+
+## Proposed Changes
+
+### [Backend] Data Schemas [NEW]
+#### [Lab.js](file:///c:/Users/Az/Desktop/LMS/server/models/Lab.js)
+Stores coding tasks.
+*   `title`: (String)
+*   `description`: (Markdown String)
+*   `initialCode`: (Object mapping language to starter code)
+*   `language`: (String)
+*   `testCases`: Optional array for auto-grading.
+
+#### [Workspace.js](file:///c:/Users/Az/Desktop/LMS/server/models/Workspace.js)
+Stores student progress.
+*   `labId`: Reference.
+*   `studentId`: Reference.
+*   `code`: (String)
+*   `lastSaved`: (Date)
+
+### [Backend] API Routes & Controllers [NEW]
+#### [Lab Controller](file:///c:/Users/Az/Desktop/LMS/server/controllers/labController.js)
+*   `getLabs`: Fetch all coding tasks.
+*   `saveWorkspace`: Auto-save student progress as they type.
+*   `getWorkspace`: Resume work from the last session.
+
+### [Frontend] Coding Environment [NEW] [CodingLabs.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/pages/CodingLabs.jsx)
+A full-screen interactive IDE:
+*   **Monaco Editor Integration**: The standard engine for VS Code.
+*   **Support for 10+ Languages**: Including JavaScript, Python, Java, C++, and Go.
+*   **Integrated Console**: A custom black Terminal UI that captures all logs.
+*   **Split Pane Layout**: Problem description on the left; Editor and Console on the right.
+*   **Themes**: Toggle between Light and Dark VS Code themes.
+
+## Open Questions
+
+1.  **Auto-Grading**: Should we implement automated test cases (Pass/Fail) in this phase, or keep it as an "Open Playground" first?
+    *   *Recommendation*: Open Playground first, adding test cases as a follow-up.
+2.  **External Libraries**: Should we support external libraries (e.g., `numpy` in Python)?
+    *   *Note*: Piston supports standard libraries. Specialized ones may require a future dedicated Docker-based backend.
+
+## Verification Plan
+
+### Automated Tests
+1.  **Execution Roundtrip**: Run a simple "Hello World" in Python and verify the terminal captures the output from the Piston API.
+2.  **Persistence**: Start code in JS, refresh page, and verify the editor restores the same code from the database.
+
+### Manual Verification
+1.  **IDE Feel**: Verify that IntelliSense (autocomplete) works as expected in Monaco.
+2.  **Error Handling**: Intentionally write broken code and verify the console shows meaningful error logs.

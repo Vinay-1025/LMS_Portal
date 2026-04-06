@@ -1,0 +1,64 @@
+# Implementation Plan - Responsive Layout & Automated Sidebar
+
+The goal is to make the LMS application fully responsive across all devices and zoom levels. This includes an automated sidebar that transitions between expanded, mini (icons only), and hidden (mobile drawer) states based on the screen width.
+
+## User Review Required
+
+> [!IMPORTANT]
+> The sidebar will now automatically collapse to icons-only mode on medium screens (768px - 1024px) and hide completely behind a hamburger menu on small screens (< 768px). 
+> The main content area will dynamically adjust its margin to prevent overlapping.
+
+## Proposed Changes
+
+### Redux State Management
+We will add a new slice to manage the layout state globally.
+
+#### [NEW] [layoutSlice.js](file:///c:/Users/Az/Desktop/LMS/client/src/features/layoutSlice.js)
+-   Store sidebar state: `isCollapsed` (mini mode) and `isMobileMenuOpen`.
+-   Add toggles and explicit setter actions.
+
+#### [MODIFY] [store.js](file:///c:/Users/Az/Desktop/LMS/client/src/store/store.js)
+-   Register the `layoutReducer`.
+
+---
+
+### UI Components
+
+#### [MODIFY] [Layout.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/components/Layout.jsx)
+-   Implement a `useEffect` to listen for window resize events.
+-   Automatically dispatch collapse/hide actions based on width thresholds.
+-   Adjust the `<main>` component's `marginLeft` dynamically:
+    -   240px (Expanded)
+    -   80px (Mini)
+    -   0px (Mobile)
+
+#### [MODIFY] [Sidebar.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/components/Sidebar.jsx)
+-   Update styles to handle `isCollapsed` state (hide text, reduce width).
+-   Add mobile drawer styling (fixed overlay when `isMobileMenuOpen` is true).
+-   Smooth transitions for all width changes.
+
+#### [MODIFY] [Topbar.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/components/Topbar.jsx)
+-   Add a hamburger menu icon (visible only on mobile) to toggle the sidebar.
+-   Ensure the topbar itself is responsive.
+
+---
+
+### Responsive Styling
+
+#### [MODIFY] [index.css](file:///c:/Users/Az/Desktop/LMS/client/src/index.css) or [theme.css](file:///c:/Users/Az/Desktop/LMS/client/src/styles/theme.css)
+-   Add global responsive utilities if needed.
+-   Fix any components that have fixed pixel widths that break on zoom.
+
+## Open Questions
+-   Should the "Mini" sidebar show tooltips when hovering over icons? (Recommended for UX)
+-   Should the mobile sidebar be a push-style or an overlay-style drawer? (Recommended: Overlay)
+
+## Verification Plan
+
+### Automated Tests
+-   Not applicable for UI layout changes at this stage, but will use the browser tool to verify.
+
+### Manual Verification
+-   **Desktop**: Resize window and verify sidebar collapses to icons at 1024px and hides at 768px.
+-   **Zoom**: Zoom in to 200% and 400% to ensure the layout remains functional and readable.
+-   **Mobile**: Verify hamburger menu toggles the sidebar overlay correctly.

@@ -1,0 +1,50 @@
+# Implementation Plan: Marks & Ranks 3.0 - Academic Excellence
+
+Transform the Results module into a high-fidelity analytics suite with gamification, granular tutor insights, and premium visual feedback.
+
+## User Review Required
+
+> [!IMPORTANT]
+> **Granular Reporting**: Tutors will now be able to see "Sequence Heatmaps" showing which specific questions students found most challenging. This requires extra processing on the backend.
+> **Achievements**: I will implement a basic "Merit Badge" system (e.g., Perfect Submission, Speed Runner). Are there specific institutional awards you'd like to include?
+
+## Proposed Changes
+
+### 1. Backend: Analytics Engine
+**[MODIFY] [assessmentController.js](file:///c:/Users/Az/Desktop/LMS/server/controllers/assessmentController.js)**
+- **New `getAssessmentInsights`**: For a specific assessment, calculate the "Success Rate" per question. (e.g., "Question 4 was missed by 80% of students").
+- **Enhanced `getAcademicAnalytics`**: Add logic to detect "Merit Achievements" (e.g., consistency streaks).
+
+**[MODIFY] [assessmentRoutes.js](file:///c:/Users/Az/Desktop/LMS/server/routes/assessmentRoutes.js)**
+- Register `GET /:id/insights` for tutor-side question analysis.
+
+---
+
+### 2. Frontend: Gamified Analytics UI
+**[MODIFY] [Marks.jsx](file:///c:/Users/Az/Desktop/LMS/client/src/pages/Marks.jsx)**
+- **Gamification Layer**:
+    - **Achievement Badges**: Display glowing icons for "Perfect Score", "Fastest Accuracy", etc.
+    - **Comparison Pills**: Show "Above Class Average" or "Top 5%" markers next to student scores.
+- **Tutor Insights Hub**:
+    - **Sequence Heatmap**: A visual grid showing which questions in the selected protocol had the lowest accuracy.
+    - **CSV Export**: Fully implemented client-side data export to `.csv`.
+- **UI Representations**:
+    - **Animated Score Trackers**: Use localized state to "count up" percentages and ranks on mount.
+    - **Hover-Active Details**: Interactive rows that expand to show individual question breakdown.
+    - **Enhanced Glassmorphism**: Add subtle radial glows that follow the cursor or pulse based on performance level.
+
+---
+
+### 3. Polish & Responsiveness
+- Ensure the "Heatmap" and "Achievements" sections are gracefully hidden or simplified on narrow viewports.
+- Maintain the premium SaaS "Mission Control" aesthetic.
+
+## Verification Plan
+
+### Automated Tests
+- Verify the accuracy calculation logic for the Question Heatmap.
+
+### Manual Verification
+1. **Student View**: Complete a perfect quiz and confirm the "Perfect Score" badge appears in the Marks hub.
+2. **Tutor View**: Select an assessment where some students failed a specific question; verify that "Hardest Question" insight is correctly identified in the heatmap.
+3. **Export**: Verify the CSV export includes student names, scores, and accuracy.

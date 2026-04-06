@@ -1,0 +1,1893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduNexus LMS — Complete Platform Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0d14;
+    --bg2: #0f1320;
+    --bg3: #141826;
+    --border: #1e2535;
+    --accent: #4f8ef7;
+    --accent2: #7c5ef7;
+    --accent3: #f76e4f;
+    --accent4: #4ff7b8;
+    --accent5: #f7c84f;
+    --text: #e8eaf0;
+    --text2: #8b92a8;
+    --text3: #5a607a;
+    --student: #4ff7b8;
+    --tutor: #4f8ef7;
+    --mgmt: #f76e4f;
+    --outsider: #f7c84f;
+    --admin: #c47af7;
+    --card: #131829;
+    --card-border: #1e2a40;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* LAYOUT */
+  .app { display: flex; min-height: 100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-mark {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .logo-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--text), var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .logo-tagline {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+
+  /* Role Filter Tabs */
+  .role-filter {
+    padding: 16px 16px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .role-filter-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+    margin-bottom: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tabs {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .role-tab {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .role-tab[data-role="all"] { border-color: var(--border); color: var(--text2); }
+  .role-tab[data-role="all"].active { background: var(--border); color: var(--text); }
+  .role-tab[data-role="student"] { border-color: var(--student); color: var(--student); }
+  .role-tab[data-role="student"].active { background: var(--student); color: #000; }
+  .role-tab[data-role="tutor"] { border-color: var(--tutor); color: var(--tutor); }
+  .role-tab[data-role="tutor"].active { background: var(--tutor); color: #fff; }
+  .role-tab[data-role="management"] { border-color: var(--mgmt); color: var(--mgmt); }
+  .role-tab[data-role="management"].active { background: var(--mgmt); color: #fff; }
+  .role-tab[data-role="outsider"] { border-color: var(--outsider); color: var(--outsider); }
+  .role-tab[data-role="outsider"].active { background: var(--outsider); color: #000; }
+  .role-tab[data-role="admin"] { border-color: var(--admin); color: var(--admin); }
+  .role-tab[data-role="admin"].active { background: var(--admin); color: #fff; }
+
+  /* Nav */
+  .nav-section {
+    padding: 8px 0;
+  }
+
+  .nav-group-label {
+    padding: 10px 20px 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 20px;
+    cursor: pointer;
+    border-radius: 0;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    font-size: 13.5px;
+    color: var(--text2);
+  }
+
+  .nav-item:hover { background: var(--bg3); color: var(--text); }
+  .nav-item.active { background: rgba(79,142,247,0.08); border-left-color: var(--accent); color: var(--text); }
+
+  .nav-item .nav-icon { font-size: 15px; width: 20px; text-align: center; }
+
+  .nav-badge {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* TOP BAR */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(10,13,20,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .breadcrumb {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .breadcrumb span { color: var(--accent); }
+
+  .version-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    background: rgba(79,142,247,0.1);
+    border: 1px solid rgba(79,142,247,0.3);
+    border-radius: 20px;
+    color: var(--accent);
+  }
+
+  /* CONTENT AREA */
+  .content {
+    padding: 48px 48px 80px;
+    max-width: 1100px;
+  }
+
+  /* Section Header */
+  .section-header {
+    margin-bottom: 40px;
+    animation: fadeUp 0.4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    letter-spacing: -1.5px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    background: linear-gradient(135deg, var(--text) 60%, var(--text3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .section-desc {
+    color: var(--text2);
+    font-size: 16px;
+    max-width: 640px;
+    line-height: 1.8;
+  }
+
+  /* CARDS GRID */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 22px;
+    transition: all 0.2s;
+    cursor: default;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(79,142,247,0.1);
+  }
+
+  .card-icon {
+    font-size: 26px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  /* ROLE SECTION */
+  .role-section {
+    margin: 40px 0;
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .role-section-header {
+    padding: 20px 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+
+  .role-section-icon {
+    font-size: 28px;
+    width: 50px; height: 50px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px;
+  }
+
+  .role-section-meta { flex: 1; }
+
+  .role-section-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+
+  .role-section-subtitle {
+    font-size: 12px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-badge {
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-section-body {
+    padding: 0 28px 28px;
+  }
+
+  /* MODULE BLOCK */
+  .module-block {
+    margin: 16px 0;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .module-header {
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255,255,255,0.02);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .module-header:hover { background: rgba(255,255,255,0.04); }
+
+  .module-icon { font-size: 18px; width: 24px; text-align: center; }
+  .module-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    flex: 1;
+  }
+
+  .module-count {
+    font-size: 11px;
+    color: var(--text3);
+    font-family: 'JetBrains Mono', monospace;
+    margin-right: 8px;
+  }
+
+  .module-chevron {
+    color: var(--text3);
+    transition: transform 0.2s;
+    font-size: 12px;
+  }
+
+  .module-block.open .module-chevron { transform: rotate(90deg); }
+
+  .module-body {
+    display: none;
+    padding: 0 18px 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .module-block.open .module-body { display: block; }
+
+  /* Feature List */
+  .feature-list {
+    list-style: none;
+    margin: 12px 0 0;
+  }
+
+  .feature-item {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    font-size: 13.5px;
+  }
+
+  .feature-item:last-child { border-bottom: none; }
+
+  .feature-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .feature-text { flex: 1; color: var(--text2); }
+  .feature-title { color: var(--text); font-weight: 500; }
+
+  .feature-tags {
+    display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px;
+  }
+
+  .ftag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.05);
+    color: var(--text3);
+    border: 1px solid var(--border);
+  }
+
+  /* PERMISSION MATRIX */
+  .perm-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+
+  .perm-matrix th {
+    padding: 10px 14px;
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text3);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+  }
+
+  .perm-matrix td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text2);
+    vertical-align: middle;
+  }
+
+  .perm-matrix tr:last-child td { border-bottom: none; }
+  .perm-matrix tr:hover td { background: rgba(255,255,255,0.02); }
+
+  .perm-check { color: #4ff7b8; font-size: 16px; }
+  .perm-cross { color: #3d4560; font-size: 16px; }
+  .perm-partial { color: var(--accent5); font-size: 14px; }
+
+  /* Access Control block */
+  .access-box {
+    background: rgba(79,142,247,0.05);
+    border: 1px solid rgba(79,142,247,0.2);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .access-box-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 12px;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* INFO BOX */
+  .info-box {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    display: flex; gap: 14px; align-items: flex-start;
+    font-size: 13.5px;
+  }
+
+  .info-box.blue { background: rgba(79,142,247,0.08); border: 1px solid rgba(79,142,247,0.2); }
+  .info-box.green { background: rgba(79,247,184,0.08); border: 1px solid rgba(79,247,184,0.2); }
+  .info-box.orange { background: rgba(247,110,79,0.08); border: 1px solid rgba(247,110,79,0.2); }
+  .info-box.yellow { background: rgba(247,200,79,0.08); border: 1px solid rgba(247,200,79,0.2); }
+
+  .info-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+  .info-text { color: var(--text2); }
+  .info-text strong { color: var(--text); }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, var(--border) 0%, transparent 100%);
+    margin: 40px 0;
+  }
+
+  /* PAGE */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeUp 0.35s ease; }
+
+  /* OVERVIEW GRID */
+  .overview-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .stat-box {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--text3);
+    margin-top: 2px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Flow Diagram */
+  .flow-diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin: 24px 0;
+    overflow-x: auto;
+    padding: 16px 0;
+  }
+
+  .flow-node {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: center;
+    min-width: 130px;
+    flex-shrink: 0;
+    font-size: 13px;
+  }
+
+  .flow-node-icon { font-size: 22px; display: block; margin-bottom: 6px; }
+  .flow-node-name { font-weight: 600; font-family: 'Syne', sans-serif; font-size: 13px; }
+  .flow-node-sub { font-size: 11px; color: var(--text3); font-family: 'JetBrains Mono', monospace; }
+
+  .flow-arrow {
+    color: var(--text3);
+    font-size: 20px;
+    margin: 0 6px;
+    flex-shrink: 0;
+  }
+
+  /* Highlight box */
+  .highlight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 20px 0;
+  }
+
+  .hl-item {
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-size: 13px;
+  }
+
+  .hl-item strong { color: var(--text); display: block; margin-bottom: 3px; font-size: 13.5px; }
+  .hl-item span { color: var(--text3); font-size: 12.5px; }
+
+  /* Sub-heading */
+  h2.sub {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    margin: 32px 0 12px;
+    color: var(--text);
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  h3.sub {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin: 20px 0 8px;
+    color: var(--text);
+  }
+
+  p.body { color: var(--text2); font-size: 14px; line-height: 1.8; margin-bottom: 12px; }
+
+  /* CUSTOM ACCESS DESIGNER SECTION */
+  .access-designer {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    padding: 28px;
+    margin: 20px 0;
+  }
+
+  .access-designer-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .access-role-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .access-role-row:last-child { border-bottom: none; }
+
+  .access-role-label {
+    width: 130px;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .access-modules { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+
+  .amod {
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    border: 1px solid transparent;
+  }
+
+  .amod.yes { background: rgba(79,247,184,0.1); border-color: rgba(79,247,184,0.3); color: var(--student); }
+  .amod.partial { background: rgba(247,200,79,0.1); border-color: rgba(247,200,79,0.3); color: var(--outsider); }
+  .amod.no { background: rgba(255,255,255,0.03); border-color: var(--border); color: var(--text3); }
+
+  /* TAG */
+  .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+
+  .tag {
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .sidebar { width: 240px; min-width: 240px; }
+    .main { margin-left: 240px; }
+    .content { padding: 28px 24px; }
+    .overview-stats { grid-template-columns: repeat(2, 1fr); }
+    .section-title { font-size: 30px; }
+  }
+
+  @media (max-width: 680px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    .topbar { padding: 12px 20px; }
+    .content { padding: 24px 20px; }
+    .highlight-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Selection highlight */
+  ::selection { background: rgba(79,142,247,0.25); }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🎓</div>
+      <div class="logo-name">EduNexus</div>
+    </div>
+    <div class="logo-tagline">LMS Platform Docs v2.0</div>
+  </div>
+
+  <div class="role-filter">
+    <div class="role-filter-label">Filter by Role</div>
+    <div class="role-tabs">
+      <div class="role-tab active" data-role="all" onclick="filterRole('all', this)">All</div>
+      <div class="role-tab" data-role="student" onclick="filterRole('student', this)">Student</div>
+      <div class="role-tab" data-role="tutor" onclick="filterRole('tutor', this)">Tutor</div>
+      <div class="role-tab" data-role="management" onclick="filterRole('management', this)">Mgmt</div>
+      <div class="role-tab" data-role="outsider" onclick="filterRole('outsider', this)">Outsider</div>
+      <div class="role-tab" data-role="admin" onclick="filterRole('admin', this)">Admin</div>
+    </div>
+  </div>
+
+  <nav class="nav-section">
+    <div class="nav-group-label">Getting Started</div>
+    <div class="nav-item active" onclick="showPage('overview', this)">
+      <span class="nav-icon">🗺️</span> Platform Overview
+    </div>
+    <div class="nav-item" onclick="showPage('architecture', this)">
+      <span class="nav-icon">🏗️</span> Architecture
+    </div>
+    <div class="nav-item" onclick="showPage('access', this)">
+      <span class="nav-icon">🔑</span> Access Control
+      <span class="nav-badge" style="background:rgba(79,142,247,0.15);color:var(--accent)">NEW</span>
+    </div>
+
+    <div class="nav-group-label">Roles</div>
+    <div class="nav-item" onclick="showPage('student', this)">
+      <span class="nav-icon">🎒</span> Student Portal
+      <span class="nav-badge" style="background:rgba(79,247,184,0.1);color:var(--student)">STU</span>
+    </div>
+    <div class="nav-item" onclick="showPage('tutor', this)">
+      <span class="nav-icon">👨‍🏫</span> Tutor Portal
+      <span class="nav-badge" style="background:rgba(79,142,247,0.1);color:var(--tutor)">TUT</span>
+    </div>
+    <div class="nav-item" onclick="showPage('management', this)">
+      <span class="nav-icon">🏢</span> Management Portal
+      <span class="nav-badge" style="background:rgba(247,110,79,0.1);color:var(--mgmt)">MGT</span>
+    </div>
+    <div class="nav-item" onclick="showPage('outsider', this)">
+      <span class="nav-icon">🌐</span> Outsider / Guest
+      <span class="nav-badge" style="background:rgba(247,200,79,0.1);color:var(--outsider)">EXT</span>
+    </div>
+    <div class="nav-item" onclick="showPage('admin', this)">
+      <span class="nav-icon">⚙️</span> Super Admin
+      <span class="nav-badge" style="background:rgba(196,122,247,0.1);color:var(--admin)">ADM</span>
+    </div>
+
+    <div class="nav-group-label">Core Modules</div>
+    <div class="nav-item" onclick="showPage('courses', this)">
+      <span class="nav-icon">📚</span> Courses & Materials
+    </div>
+    <div class="nav-item" onclick="showPage('attendance', this)">
+      <span class="nav-icon">📅</span> Attendance System
+    </div>
+    <div class="nav-item" onclick="showPage('assessments', this)">
+      <span class="nav-icon">📝</span> Assessments & Tests
+    </div>
+    <div class="nav-item" onclick="showPage('livetools', this)">
+      <span class="nav-icon">💻</span> Live Coding & Labs
+    </div>
+    <div class="nav-item" onclick="showPage('meets', this)">
+      <span class="nav-icon">📹</span> Meets & Sessions
+    </div>
+    <div class="nav-item" onclick="showPage('marks', this)">
+      <span class="nav-icon">🏆</span> Marks & Results
+    </div>
+    <div class="nav-item" onclick="showPage('communication', this)">
+      <span class="nav-icon">💬</span> Communication
+    </div>
+    <div class="nav-item" onclick="showPage('analytics', this)">
+      <span class="nav-icon">📊</span> Analytics & Reports
+    </div>
+    <div class="nav-item" onclick="showPage('settings', this)">
+      <span class="nav-icon">🛠️</span> Settings & Config
+    </div>
+  </nav>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="breadcrumb">
+      EduNexus LMS &nbsp;›&nbsp; <span id="breadcrumb-text">Platform Overview</span>
+    </div>
+    <div class="version-tag">v2.0.0 — 2025</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ============================================================ -->
+    <!-- PAGE: OVERVIEW -->
+    <!-- ============================================================ -->
+    <div id="page-overview" class="page active">
+      <div class="section-header">
+        <div class="section-eyebrow">🗺️ Platform Overview</div>
+        <div class="section-title">EduNexus LMS<br>Complete Documentation</div>
+        <div class="section-desc">A fully flexible, role-driven Learning Management System with custom module access, live coding labs, smart assessments, automated attendance, and real-time collaboration — built for institutions of every scale.</div>
+      </div>
+
+      <div class="overview-stats">
+        <div class="stat-box"><div class="stat-num">9</div><div class="stat-label">Core Modules</div></div>
+        <div class="stat-box"><div class="stat-num">5</div><div class="stat-label">User Roles</div></div>
+        <div class="stat-box"><div class="stat-num">60+</div><div class="stat-label">Features</div></div>
+        <div class="stat-box"><div class="stat-num">∞</div><div class="stat-label">Custom Roles</div></div>
+      </div>
+
+      <div class="info-box blue">
+        <div class="info-icon">💡</div>
+        <div class="info-text"><strong>Flexible by Design:</strong> Every module and feature can be individually toggled per user role or per individual user. Create unlimited custom roles with granular permissions — from read-only guest access to full system administration.</div>
+      </div>
+
+      <h2 class="sub">📦 Platform Modules</h2>
+      <div class="cards-grid">
+        <div class="card" style="animation-delay:0.05s" onclick="showPage('courses', document.querySelector('.nav-item:nth-child(13)'))">
+          <span class="card-icon">📚</span>
+          <div class="card-title">Courses & Materials</div>
+          <div class="card-desc">Organize courses, upload materials (PDF, video, links), set prerequisites, and structure learning paths with chapters and milestones.</div>
+        </div>
+        <div class="card" style="animation-delay:0.1s">
+          <span class="card-icon">📅</span>
+          <div class="card-title">Attendance Tracker</div>
+          <div class="card-desc">Automated & manual attendance tracking with QR check-in, geo-fencing, facial recognition, and real-time reports.</div>
+        </div>
+        <div class="card" style="animation-delay:0.15s">
+          <span class="card-icon">📝</span>
+          <div class="card-title">Assessments & Tests</div>
+          <div class="card-desc">MCQ, descriptive, code-based, drag-and-drop, and mixed assessments with time limits, anti-cheat, and auto-grading.</div>
+        </div>
+        <div class="card" style="animation-delay:0.2s">
+          <span class="card-icon">💻</span>
+          <div class="card-title">Live Coding Labs</div>
+          <div class="card-desc">In-browser IDE with 30+ languages, real-time collaboration, instructor screen share, automated test cases, and sandboxed execution.</div>
+        </div>
+        <div class="card" style="animation-delay:0.25s">
+          <span class="card-icon">📹</span>
+          <div class="card-title">Meets & Sessions</div>
+          <div class="card-desc">Schedule, host, and record live video sessions. Breakout rooms, screen share, polls, hand-raise, and automatic transcripts.</div>
+        </div>
+        <div class="card" style="animation-delay:0.3s">
+          <span class="card-icon">🏆</span>
+          <div class="card-title">Marks & Results</div>
+          <div class="card-desc">Weighted grading, grade books, result publication control, rank lists, transcripts, and pass/fail rules with notifications.</div>
+        </div>
+        <div class="card" style="animation-delay:0.35s">
+          <span class="card-icon">💬</span>
+          <div class="card-title">Communication Hub</div>
+          <div class="card-desc">Announcements, group chat, direct messages, forum/discussion boards, email integration, and push notifications.</div>
+        </div>
+        <div class="card" style="animation-delay:0.4s">
+          <span class="card-icon">📊</span>
+          <div class="card-title">Analytics & Reports</div>
+          <div class="card-desc">Learner progress dashboards, cohort analytics, engagement heatmaps, attendance reports, and custom exportable reports.</div>
+        </div>
+        <div class="card" style="animation-delay:0.45s">
+          <span class="card-icon">🔑</span>
+          <div class="card-title">Access Control Engine</div>
+          <div class="card-desc">Role-based and user-level permission system. Custom roles, module visibility toggles, time-gated access, and IP restrictions.</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="sub">👥 User Roles at a Glance</h2>
+      <div class="flow-diagram">
+        <div class="flow-node">
+          <span class="flow-node-icon">⚙️</span>
+          <div class="flow-node-name" style="color:var(--admin)">Super Admin</div>
+          <div class="flow-node-sub">Full control</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <span class="flow-node-icon">🏢</span>
+          <div class="flow-node-name" style="color:var(--mgmt)">Management</div>
+          <div class="flow-node-sub">Org oversight</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <span class="flow-node-icon">👨‍🏫</span>
+          <div class="flow-node-name" style="color:var(--tutor)">Tutor</div>
+          <div class="flow-node-sub">Teach & assess</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <span class="flow-node-icon">🎒</span>
+          <div class="flow-node-name" style="color:var(--student)">Student</div>
+          <div class="flow-node-sub">Learn & submit</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">
+          <span class="flow-node-icon">🌐</span>
+          <div class="flow-node-name" style="color:var(--outsider)">Outsider</div>
+          <div class="flow-node-sub">Limited / guest</div>
+        </div>
+      </div>
+
+      <div class="highlight-grid">
+        <div class="hl-item"><strong>🔄 Custom Roles</strong><span>Create unlimited custom roles with any combination of module permissions — department heads, teaching assistants, mentors, auditors, parents, etc.</span></div>
+        <div class="hl-item"><strong>🎯 Per-User Overrides</strong><span>Override role permissions at the individual user level — give a specific student early access to a module or restrict a tutor to certain courses only.</span></div>
+        <div class="hl-item"><strong>⏱️ Time-Gated Access</strong><span>Schedule when modules or content become visible. Automatically unlock assessments, reveal results, or grant access after dates/milestones.</span></div>
+        <div class="hl-item"><strong>🛡️ Module Toggle</strong><span>Any module can be enabled or disabled globally, per role, or per user without affecting other parts of the system.</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: ARCHITECTURE -->
+    <!-- ============================================================ -->
+    <div id="page-architecture" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">🏗️ System Architecture</div>
+        <div class="section-title">Platform<br>Architecture</div>
+        <div class="section-desc">How EduNexus is structured — data flow, module boundaries, and integration points.</div>
+      </div>
+
+      <div class="info-box green">
+        <div class="info-icon">✅</div>
+        <div class="info-text"><strong>Microservice-Ready:</strong> Each module is independently deployable. The platform can run as a monolith or be split into microservices per module for scale.</div>
+      </div>
+
+      <h2 class="sub">🔧 Technology Stack</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-icon">🖥️</span>
+          <div class="card-title">Frontend</div>
+          <div class="card-desc">React + TypeScript, Tailwind CSS, Socket.IO client, Monaco Editor (VS Code engine), WebRTC for live sessions, PWA support.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">⚙️</span>
+          <div class="card-title">Backend</div>
+          <div class="card-desc">Node.js + Express / NestJS, REST + GraphQL APIs, WebSocket server, JWT + RBAC auth, Redis for session caching.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🗄️</span>
+          <div class="card-title">Database</div>
+          <div class="card-desc">PostgreSQL (structured data), MongoDB (flexible content), Redis (cache/sessions), S3-compatible storage for media/files.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🔒</span>
+          <div class="card-title">Security</div>
+          <div class="card-desc">OAuth 2.0, SAML SSO, 2FA, IP whitelisting, TLS encryption, sandboxed code execution (Docker), GDPR compliant data handling.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">📡</span>
+          <div class="card-title">Real-time</div>
+          <div class="card-desc">Socket.IO for live collaboration, WebRTC for video meets, Server-Sent Events for notifications, Redis Pub/Sub for event bus.</div>
+        </div>
+        <div class="card">
+          <span class="card-icon">🔗</span>
+          <div class="card-title">Integrations</div>
+          <div class="card-desc">Zoom / Google Meet / MS Teams APIs, Google Drive, OneDrive, Stripe/Razorpay for payments, SMTP/SendGrid for email, Slack.</div>
+        </div>
+      </div>
+
+      <h2 class="sub">🔄 Data Flow</h2>
+      <p class="body">Every user interaction passes through the <strong>Permission Engine</strong> before reaching any module. The engine checks role permissions, individual user overrides, time-gated rules, and IP restrictions before granting or denying access.</p>
+
+      <div class="access-box">
+        <div class="access-box-title">⚡ Request Lifecycle</div>
+        <div class="flow-diagram" style="flex-wrap:wrap">
+          <div class="flow-node" style="min-width:100px"><span class="flow-node-icon">👤</span><div class="flow-node-name">User Action</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="min-width:100px"><span class="flow-node-icon">🔑</span><div class="flow-node-name">Auth Check</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="min-width:100px"><span class="flow-node-icon">🛡️</span><div class="flow-node-name">Permission Engine</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="min-width:100px"><span class="flow-node-icon">📦</span><div class="flow-node-name">Module Handler</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="min-width:100px"><span class="flow-node-icon">🗄️</span><div class="flow-node-name">Database</div></div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node" style="min-width:100px"><span class="flow-node-icon">📤</span><div class="flow-node-name">Response</div></div>
+        </div>
+      </div>
+
+      <h2 class="sub">🌐 Deployment Options</h2>
+      <div class="highlight-grid">
+        <div class="hl-item"><strong>☁️ Cloud SaaS</strong><span>Hosted on AWS/GCP/Azure. Auto-scaling, managed backups, 99.9% SLA uptime guarantee.</span></div>
+        <div class="hl-item"><strong>🏠 On-Premise</strong><span>Full Docker/Kubernetes deployment on institution servers. Complete data sovereignty.</span></div>
+        <div class="hl-item"><strong>🔀 Hybrid</strong><span>Core data on-premise, media/CDN on cloud. Best of both security and performance.</span></div>
+        <div class="hl-item"><strong>🏫 Multi-Tenant</strong><span>Single deployment serving multiple institutions with complete data isolation per tenant.</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: ACCESS CONTROL -->
+    <!-- ============================================================ -->
+    <div id="page-access" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">🔑 Access Control Engine</div>
+        <div class="section-title">Flexible<br>Permission System</div>
+        <div class="section-desc">EduNexus uses a layered permission architecture — role defaults → individual overrides → time gates → IP rules. Every module, feature, and data record can be access-controlled independently.</div>
+      </div>
+
+      <div class="info-box blue">
+        <div class="info-icon">🔑</div>
+        <div class="info-text"><strong>Three-Layer Model:</strong> (1) Role-level defaults set baseline access. (2) Individual user overrides can expand or restrict beyond role defaults. (3) Time/condition gates can add temporary or scheduled access rules.</div>
+      </div>
+
+      <h2 class="sub">📊 Default Module Access Matrix</h2>
+      <div style="overflow-x:auto">
+        <table class="perm-matrix">
+          <thead>
+            <tr>
+              <th>Module</th>
+              <th style="color:var(--student)">Student</th>
+              <th style="color:var(--tutor)">Tutor</th>
+              <th style="color:var(--mgmt)">Management</th>
+              <th style="color:var(--outsider)">Outsider</th>
+              <th style="color:var(--admin)">Super Admin</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>📚 Courses (View)</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Public only</td><td class="perm-check">✔</td></tr>
+            <tr><td>📚 Courses (Create/Edit)</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Approve only</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>📅 Attendance (View Own)</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>📅 Attendance (Mark/Edit)</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Override only</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>📝 Assessments (Take)</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-cross">✗</td><td class="perm-partial">⚬ Demo only</td><td class="perm-check">✔</td></tr>
+            <tr><td>📝 Assessments (Create)</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>💻 Live Coding (Use)</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-partial">⚬ View only</td><td class="perm-check">✔</td></tr>
+            <tr><td>📹 Meets (Join)</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-partial">⚬ If invited</td><td class="perm-check">✔</td></tr>
+            <tr><td>📹 Meets (Host)</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>🏆 Marks (View Own)</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>🏆 Marks (Enter/Edit)</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Approve only</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>💬 Chat & Forums</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Read only</td><td class="perm-check">✔</td></tr>
+            <tr><td>📊 Analytics (Own)</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>📊 Analytics (Org-wide)</td><td class="perm-cross">✗</td><td class="perm-partial">⚬ Assigned courses</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>⚙️ System Settings</td><td class="perm-cross">✗</td><td class="perm-cross">✗</td><td class="perm-partial">⚬ Limited</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+            <tr><td>👥 User Management</td><td class="perm-cross">✗</td><td class="perm-cross">✗</td><td class="perm-partial">⚬ View + enroll</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="body" style="margin-top:8px;font-size:12px;color:var(--text3)">⚬ = Partial / Conditional access &nbsp;|&nbsp; ✔ = Full access &nbsp;|&nbsp; ✗ = No access (can be overridden per user)</p>
+
+      <h2 class="sub">🛠️ Custom Role Builder</h2>
+      <p class="body">Super Admins and Management can create unlimited custom roles. Every permission is individually toggled. Examples of common custom roles:</p>
+
+      <div class="access-designer">
+        <div class="access-designer-title">🎨 Sample Custom Role Configurations</div>
+        <p style="font-size:12px;color:var(--text3);margin-bottom:16px;font-family:'JetBrains Mono',monospace">⚬ = Partial &nbsp; ✔ = Full &nbsp; ✗ = None</p>
+
+        <div class="access-role-row">
+          <div class="access-role-label" style="color:var(--student)">🎒 Student</div>
+          <div class="access-modules">
+            <span class="amod yes">Courses ✔</span>
+            <span class="amod yes">Attendance View ✔</span>
+            <span class="amod yes">Assessments ✔</span>
+            <span class="amod yes">Live Coding ✔</span>
+            <span class="amod yes">Meet Join ✔</span>
+            <span class="amod yes">Own Marks ✔</span>
+            <span class="amod yes">Chat ✔</span>
+            <span class="amod no">Analytics ✗</span>
+            <span class="amod no">Admin ✗</span>
+          </div>
+        </div>
+        <div class="access-role-row">
+          <div class="access-role-label" style="color:var(--tutor)">👨‍🏫 Tutor</div>
+          <div class="access-modules">
+            <span class="amod yes">Courses ✔</span>
+            <span class="amod yes">Attendance Mark ✔</span>
+            <span class="amod yes">Create Assessments ✔</span>
+            <span class="amod yes">Live Coding ✔</span>
+            <span class="amod yes">Host Meet ✔</span>
+            <span class="amod yes">Grade Marks ✔</span>
+            <span class="amod yes">Chat ✔</span>
+            <span class="amod partial">Analytics ⚬</span>
+            <span class="amod no">System Settings ✗</span>
+          </div>
+        </div>
+        <div class="access-role-row">
+          <div class="access-role-label" style="color:#a0e87a">🧑‍💼 TA (Custom)</div>
+          <div class="access-modules">
+            <span class="amod yes">Courses View ✔</span>
+            <span class="amod yes">Attendance Mark ✔</span>
+            <span class="amod partial">Assessments ⚬</span>
+            <span class="amod yes">Live Coding ✔</span>
+            <span class="amod partial">Meet ⚬</span>
+            <span class="amod partial">Marks ⚬</span>
+            <span class="amod yes">Chat ✔</span>
+            <span class="amod no">Admin ✗</span>
+          </div>
+        </div>
+        <div class="access-role-row">
+          <div class="access-role-label" style="color:var(--mgmt)">🏢 Management</div>
+          <div class="access-modules">
+            <span class="amod yes">Courses ✔</span>
+            <span class="amod yes">Attendance Reports ✔</span>
+            <span class="amod partial">Assessments ⚬</span>
+            <span class="amod no">Live Coding ✗</span>
+            <span class="amod yes">Host Meet ✔</span>
+            <span class="amod yes">Results ✔</span>
+            <span class="amod yes">Announcements ✔</span>
+            <span class="amod yes">Full Analytics ✔</span>
+            <span class="amod partial">Settings ⚬</span>
+          </div>
+        </div>
+        <div class="access-role-row">
+          <div class="access-role-label" style="color:#e87ab0">👨‍👩‍👦 Parent (Custom)</div>
+          <div class="access-modules">
+            <span class="amod partial">Course Progress ⚬</span>
+            <span class="amod yes">Attendance View ✔</span>
+            <span class="amod no">Assessments ✗</span>
+            <span class="amod no">Live Coding ✗</span>
+            <span class="amod no">Meets ✗</span>
+            <span class="amod yes">Results View ✔</span>
+            <span class="amod no">Chat ✗</span>
+            <span class="amod no">Admin ✗</span>
+          </div>
+        </div>
+        <div class="access-role-row">
+          <div class="access-role-label" style="color:var(--outsider)">🌐 Outsider/Guest</div>
+          <div class="access-modules">
+            <span class="amod partial">Public Courses ⚬</span>
+            <span class="amod no">Attendance ✗</span>
+            <span class="amod partial">Demo Quiz ⚬</span>
+            <span class="amod partial">View Coding ⚬</span>
+            <span class="amod no">Meets ✗</span>
+            <span class="amod no">Marks ✗</span>
+            <span class="amod partial">Forum Read ⚬</span>
+            <span class="amod no">Admin ✗</span>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="sub">⚡ Permission Rules Engine</h2>
+      <div class="highlight-grid">
+        <div class="hl-item"><strong>📅 Time-Gated Access</strong><span>Grant access to a module or content between specific dates. Automatically unlock results after review period ends.</span></div>
+        <div class="hl-item"><strong>🎯 Prerequisite-Based</strong><span>Unlock a course, test, or module only after the user completes a prior requirement (course completion, score threshold, etc.).</span></div>
+        <div class="hl-item"><strong>🌍 IP / Location Restriction</strong><span>Restrict module access to specific IP ranges or geographic regions (e.g., proctored exams only from campus network).</span></div>
+        <div class="hl-item"><strong>👤 Per-User Override</strong><span>Any role permission can be overridden for an individual user — grant or revoke access without changing the global role definition.</span></div>
+        <div class="hl-item"><strong>🔗 Course-Level Access</strong><span>Tutors can be assigned to specific courses only, limiting their visibility to enrolled students and their own course data.</span></div>
+        <div class="hl-item"><strong>🏷️ Batch Permissions</strong><span>Apply permission changes to an entire batch, cohort, or department in one action. Bulk enrollment + access grant.</span></div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: STUDENT -->
+    <!-- ============================================================ -->
+    <div id="page-student" class="page">
+      <div class="role-section" style="border-color:rgba(79,247,184,0.2)">
+        <div class="role-section-header" style="background:rgba(79,247,184,0.05)">
+          <div class="role-section-icon" style="background:rgba(79,247,184,0.1)">🎒</div>
+          <div class="role-section-meta">
+            <div class="role-section-name" style="color:var(--student)">Student Portal</div>
+            <div class="role-section-subtitle">Complete Feature Documentation</div>
+          </div>
+          <div class="role-badge" style="background:rgba(79,247,184,0.15);border:1px solid rgba(79,247,184,0.4);color:var(--student)">STUDENT</div>
+        </div>
+        <div class="role-section-body">
+          <p class="body">The student portal is the primary learning interface. Students interact with courses, submit assignments, take tests, join live sessions, collaborate in coding labs, and track their own progress. All features are subject to role and individual permissions configured by admins.</p>
+
+          <div class="module-block open">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📚</span>
+              <span class="module-name">Courses & Learning</span>
+              <span class="module-count">12 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Course Catalog & Enrollment</span><br>Browse available courses, view descriptions, prerequisites, syllabus, and instructor info. Enroll in open courses or request enrollment in restricted ones.<div class="feature-tags"><span class="ftag">Browse</span><span class="ftag">Enroll</span><span class="ftag">Waitlist</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Learning Path Dashboard</span><br>Visual progress tracker showing completed, in-progress, and upcoming modules. Streak tracking, completion percentage, and estimated time remaining.<div class="feature-tags"><span class="ftag">Progress</span><span class="ftag">Milestones</span><span class="ftag">Streaks</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Material Access</span><br>Access course materials: videos (with playback speed control, notes overlay), PDFs, slides, links, code snippets. Bookmark and annotate content.<div class="feature-tags"><span class="ftag">Video</span><span class="ftag">PDF</span><span class="ftag">Bookmarks</span><span class="ftag">Notes</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Chapter & Module Navigation</span><br>Navigate courses by chapter, section, and topic. Sequential or free-navigation mode based on instructor settings.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Downloadable Resources</span><br>Download permitted materials for offline study. Instructor controls what can be downloaded.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Course Completion Certificate</span><br>Auto-generated certificates upon meeting completion criteria. Shareable and verifiable via QR code.<div class="feature-tags"><span class="ftag">Certificate</span><span class="ftag">Verifiable</span></div></div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📅</span>
+              <span class="module-name">Attendance</span>
+              <span class="module-count">6 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Attendance Dashboard</span><br>View personal attendance summary: present/absent/late counts, percentage, subject-wise breakdown, calendar heatmap.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">QR / Link Check-In</span><br>Mark attendance by scanning a QR code displayed by tutor, clicking a time-limited link, or entering a session code.<div class="feature-tags"><span class="ftag">QR Code</span><span class="ftag">OTP Link</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Leave Application</span><br>Submit leave requests with reason and supporting documents. Track approval status.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Low Attendance Alert</span><br>Automatic alerts when attendance falls below configured threshold. Early warning system with recommendations.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Attendance History Export</span><br>Export personal attendance records as PDF or CSV for scholarship/visa requirements.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📝</span>
+              <span class="module-name">Assignments & Assessments</span>
+              <span class="module-count">10 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Assignment Submission</span><br>Submit assignments as file uploads, text entries, URLs, or repository links. Versioned re-submissions if permitted.<div class="feature-tags"><span class="ftag">File Upload</span><span class="ftag">Rich Text</span><span class="ftag">GitHub Link</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">MCQ / Multiple Choice Tests</span><br>Single and multiple-answer MCQ exams with timer, section navigation, flag for review, and randomized question order.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Descriptive / Essay Questions</span><br>Long-form answer inputs with rich text formatting, inline image upload, and word count tracking.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Live Coding Assessments</span><br>Solve programming problems in the browser IDE. Multiple test cases auto-verified on submit. Language selection supported.<div class="feature-tags"><span class="ftag">In-Browser IDE</span><span class="ftag">Auto-Grade</span><span class="ftag">30+ Languages</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Drag-and-Drop / Matching</span><br>Interactive question types: drag terms to definitions, order steps, match columns, fill-in-the-blanks.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Assessment Calendar</span><br>See all upcoming tests and assignment deadlines in a unified calendar. Due-date reminders via notification.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Result & Feedback View</span><br>After grading, view score breakdown per question, tutor comments, correct answers (if unlocked), and improvement suggestions.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">💻</span>
+              <span class="module-name">Live Coding & Labs</span>
+              <span class="module-count">8 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">In-Browser IDE</span><br>Full VS Code-powered editor (Monaco) with syntax highlighting, autocomplete, multi-file support, and dark/light themes.<div class="feature-tags"><span class="ftag">Monaco Editor</span><span class="ftag">30+ Languages</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Sandboxed Code Execution</span><br>Run code safely in isolated Docker containers. See stdout/stderr output in real time.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Collaborative Coding</span><br>Real-time multiplayer editing (Google Docs-style). See teammates' cursors and edits live. Pair programming mode.<div class="feature-tags"><span class="ftag">Real-Time</span><span class="ftag">Pair Programming</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Lab Environments</span><br>Pre-configured lab setups for Python, JavaScript, Java, C++, SQL, React, Data Science (Jupyter-style), and more.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Follow Instructor Mode</span><br>During live sessions, optionally follow the instructor's screen within the IDE. Toggle in/out.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Code Submission & Test Cases</span><br>Submit code for auto-grading against hidden test cases. Partial scoring supported.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📹</span>
+              <span class="module-name">Meets & Live Sessions</span>
+              <span class="module-count">7 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Join Live Sessions</span><br>One-click join for scheduled video classes. Works in browser — no plugin install required. Calendar integration.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Raise Hand / Reactions</span><br>Virtual hand-raise queue, emoji reactions, and quick polls during sessions.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Breakout Rooms</span><br>Instructors can split students into small groups for collaborative activities. Students can call for help from breakout rooms.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Session Recordings</span><br>Access recordings of past sessions. Searchable transcripts. Jump to key moments via chapter markers.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">In-Session Chat</span><br>Text chat alongside video. Private DMs to instructor. Q&A mode where questions are upvoted by peers.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">🏆</span>
+              <span class="module-name">Marks & Results</span>
+              <span class="module-count">6 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Grade Book View</span><br>See all marks in one place: assignments, quizzes, mid-terms, finals, lab scores. Overall weighted GPA/percentage.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Result Publication Alerts</span><br>Instant notifications when results are published. Email + in-app push.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Rank & Percentile</span><br>See class rank and percentile for each assessment (if unlocked by instructor).</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Transcript Download</span><br>Download official formatted transcripts with digital seal. Verifiable QR code.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Grade Appeal</span><br>Submit a grade appeal/review request with explanation. Track status of appeal.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">💬</span>
+              <span class="module-name">Communication & Social</span>
+              <span class="module-count">7 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Discussion Forums</span><br>Per-course threaded forums. Ask questions, answer peers, upvote helpful posts. Instructor-pinned answers.<div class="feature-tags"><span class="ftag">Threads</span><span class="ftag">Upvotes</span><span class="ftag">Markdown</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Direct Messaging</span><br>Message tutors and batch-mates directly. Message history, read receipts, file attachments.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Announcements Feed</span><br>See all announcements from tutors and management in a unified feed. Filter by course or type.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--student)"></span><div class="feature-text"><span class="feature-title">Study Groups</span><br>Create or join peer study groups. Group chat, shared notes, and collaborative whiteboard.</div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: TUTOR -->
+    <!-- ============================================================ -->
+    <div id="page-tutor" class="page">
+      <div class="role-section" style="border-color:rgba(79,142,247,0.2)">
+        <div class="role-section-header" style="background:rgba(79,142,247,0.05)">
+          <div class="role-section-icon" style="background:rgba(79,142,247,0.1)">👨‍🏫</div>
+          <div class="role-section-meta">
+            <div class="role-section-name" style="color:var(--tutor)">Tutor / Instructor Portal</div>
+            <div class="role-section-subtitle">Complete Feature Documentation</div>
+          </div>
+          <div class="role-badge" style="background:rgba(79,142,247,0.15);border:1px solid rgba(79,142,247,0.4);color:var(--tutor)">TUTOR</div>
+        </div>
+        <div class="role-section-body">
+          <p class="body">Tutors create, manage, and deliver educational content. They conduct live sessions, design assessments, grade submissions, manage attendance, and communicate with students. Their access is scoped to their assigned courses and batches.</p>
+
+          <div class="module-block open">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📚</span>
+              <span class="module-name">Course Builder</span>
+              <span class="module-count">14 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Course Creation Wizard</span><br>Step-by-step course builder: title, description, objectives, thumbnail, tags, enrollment settings, prerequisites.<div class="feature-tags"><span class="ftag">Wizard UI</span><span class="ftag">Templates</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Chapter & Section Management</span><br>Drag-and-drop chapter ordering. Nest topics within sections. Set sequential or open-navigation mode per course.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Material Upload</span><br>Upload videos (MP4, auto-transcoded), PDFs, slides (PPT/Google), external links, code files. Set downloadable/view-only per file.<div class="feature-tags"><span class="ftag">Video</span><span class="ftag">PDF</span><span class="ftag">Slides</span><span class="ftag">Code</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Learning Path Builder</span><br>Define prerequisite chains between modules. Set minimum score or completion rate to unlock next module.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Course Settings</span><br>Control enrollment, visibility, access window (start/end dates), capacity, and certificate criteria.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Student Enrollment Management</span><br>View enrolled students, manually add/remove, send invitations, manage waitlists.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Course Duplication</span><br>Clone an existing course structure (without student data) for a new batch. Bulk update dates.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📅</span>
+              <span class="module-name">Attendance Management</span>
+              <span class="module-count">9 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Generate Attendance Session</span><br>Start an attendance session: generates unique QR code and OTP link valid for a configurable time window (1–30 min).<div class="feature-tags"><span class="ftag">QR Generate</span><span class="ftag">Time-Limited</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Manual Attendance</span><br>Mark present/absent/late for individual students. Bulk mark. Undo/edit within allowed window.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Attendance Reports</span><br>Per-session, per-student, per-course reports. Visual attendance heatmap. Export as CSV/PDF.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Leave Request Approval</span><br>Review and approve/reject student leave applications. Notify student on decision.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Attendance-Based Alerts</span><br>Configure rules to auto-alert management and students when attendance drops below a threshold.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📝</span>
+              <span class="module-name">Assessment Creator</span>
+              <span class="module-count">16 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Question Bank</span><br>Build and organize reusable questions by topic, difficulty, type, and tags. Import from CSV or AI generation.<div class="feature-tags"><span class="ftag">Reusable</span><span class="ftag">Tagged</span><span class="ftag">AI Assist</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">MCQ Builder</span><br>Create single/multiple-answer MCQs with rich text, inline images, code blocks in questions and options. Set partial marking rules.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Descriptive Questions</span><br>Open-ended questions with rubric definition. Optional word limit. Manual or AI-assisted grading.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Coding Problem Builder</span><br>Define problem statement, starter code, test cases (public + hidden), time/memory limits, and expected output.<div class="feature-tags"><span class="ftag">Test Cases</span><span class="ftag">Hidden Tests</span><span class="ftag">Auto-Grade</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Quiz Randomization</span><br>Randomize question order, option order, and draw random questions from a pool per student for anti-cheating.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Exam Settings</span><br>Set time limits, attempts allowed, availability window, proctoring mode (camera/screen lock), negative marking, section-wise time limits.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Auto-Grading & Manual Review</span><br>MCQ and code are auto-graded. Descriptive answers flagged for manual review with inline annotation tools.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Result Publishing Controls</span><br>Publish results immediately, after review, or on a set date. Control which details students see (answer key, score only, detailed feedback).</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">💻</span>
+              <span class="module-name">Live Coding Sessions</span>
+              <span class="module-count">8 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Instructor-Controlled IDE</span><br>Broadcast your code editor to all students. Students can follow along, copy code, or work in their own sandbox simultaneously.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Pair-Programming Mode</span><br>Invite specific students to co-edit the session code in real time. Full cursor visibility for all participants.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Student Code Review</span><br>View any student's code live during lab sessions. Add inline comments and suggestions.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Test Case Management</span><br>Define and run test cases against student submissions. View pass/fail results per case.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📹</span>
+              <span class="module-name">Meet Hosting & Sessions</span>
+              <span class="module-count">10 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Schedule & Host Meetings</span><br>Schedule live sessions linked to a course. Auto-send invites. One-click start when time arrives. Recurring sessions supported.<div class="feature-tags"><span class="ftag">Recurring</span><span class="ftag">Calendar Sync</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Screen Share & Whiteboard</span><br>Share screen, application window, or open an interactive whiteboard. Annotate on screen during session.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Breakout Room Control</span><br>Split students into breakout rooms with one click. Assign topics per group. Visit any room as instructor. Timer for room activities.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">In-Session Polls & Quizzes</span><br>Launch quick polls and quiz questions mid-session. See live response aggregation in real time.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Session Recording & Transcript</span><br>Auto-record all sessions. AI-generated transcripts with speaker labels and searchable text. Publish recordings to course materials.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">🏆</span>
+              <span class="module-name">Grading & Results</span>
+              <span class="module-count">8 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Grade Book Management</span><br>Central gradebook per course. Configure components (quiz, assignment, midterm, final) with weights. Real-time total calculation.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Bulk Grade Import</span><br>Import grades from CSV for offline-graded work. Validation and error highlighting before import.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Rubric-Based Grading</span><br>Define rubrics for subjective work. Grade criteria by criteria with inline notes.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--tutor)"></span><div class="feature-text"><span class="feature-title">Grade Appeal Handling</span><br>Review student grade appeals. Add notes, update score, communicate decision to student.</div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: MANAGEMENT -->
+    <!-- ============================================================ -->
+    <div id="page-management" class="page">
+      <div class="role-section" style="border-color:rgba(247,110,79,0.2)">
+        <div class="role-section-header" style="background:rgba(247,110,79,0.05)">
+          <div class="role-section-icon" style="background:rgba(247,110,79,0.1)">🏢</div>
+          <div class="role-section-meta">
+            <div class="role-section-name" style="color:var(--mgmt)">Management Portal</div>
+            <div class="role-section-subtitle">Institutional Oversight & Operations</div>
+          </div>
+          <div class="role-badge" style="background:rgba(247,110,79,0.15);border:1px solid rgba(247,110,79,0.4);color:var(--mgmt)">MANAGEMENT</div>
+        </div>
+        <div class="role-section-body">
+          <p class="body">Management users oversee the institution's academic operations. They have org-wide visibility into attendance, results, and performance metrics. They manage staff, approve content, coordinate scheduling, handle compliance, and communicate at scale.</p>
+
+          <div class="module-block open">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📊</span>
+              <span class="module-name">Institutional Dashboard</span>
+              <span class="module-count">10 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Org-Wide Overview</span><br>Real-time KPIs: total enrolled students, active courses, average attendance, pass rates, pending submissions, upcoming meetings.<div class="feature-tags"><span class="ftag">Live KPIs</span><span class="ftag">Drill-Down</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Batch & Cohort Analytics</span><br>Compare performance across batches, departments, or time periods. Identify high/low-performing groups.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Attendance Analytics</span><br>Institution-wide attendance rates per course, per tutor, per department. Absentee trend identification.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Tutor Performance Metrics</span><br>Monitor session regularity, on-time grading, student satisfaction ratings, and engagement scores per tutor.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Custom Report Builder</span><br>Drag-and-drop report builder: choose dimensions, metrics, filters, date ranges, and visualization type. Schedule and auto-email reports.<div class="feature-tags"><span class="ftag">Drag & Drop</span><span class="ftag">Scheduled</span><span class="ftag">Export</span></div></div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">👥</span>
+              <span class="module-name">People Management</span>
+              <span class="module-count">12 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Staff & Student Directory</span><br>Search, filter, and view profiles of all users. Export lists. View activity summaries.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Bulk Enrollment</span><br>Enroll entire batches into courses via CSV upload or bulk selection. Assign tutors to batches.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Role Assignment</span><br>Assign or modify roles for any user. Grant or restrict module-level access at individual level.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Department & Batch Management</span><br>Create and manage departments, batches, and sections. Assign courses and tutors to each.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Onboarding Workflows</span><br>Define onboarding checklists for new students or staff. Auto-assign courses and send welcome materials.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📅</span>
+              <span class="module-name">Schedule & Calendar Management</span>
+              <span class="module-count">8 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Academic Calendar</span><br>Define holidays, exam periods, term start/end. This drives time-gated access for all modules.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Timetable Builder</span><br>Visual drag-and-drop timetable for classes, labs, and exams. Conflict detection. Publish to all users.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Exam Schedule</span><br>Publish examination timetables with venue, invigilator, and seating plan. Notify all relevant users.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Meeting Organizer</span><br>Schedule institutional meetings (staff, review, parent-teacher). Send invites, attach agendas, record outcomes.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📋</span>
+              <span class="module-name">Results & Compliance</span>
+              <span class="module-count">8 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Result Approval Workflow</span><br>Tutors submit grades → management reviews → approves/rejects → results published. Full audit trail.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Rank Lists & Merit Certificates</span><br>Auto-generate batch rank lists. Issue merit/distinction certificates for top performers.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Pass / Fail / Repeat Rules</span><br>Configure minimum pass criteria per subject and overall. Automatic pass/fail determination. Identify students eligible for repeating.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Audit Logs</span><br>Full activity audit log: who changed what, when. Filter by module, user, date range.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">📢</span>
+              <span class="module-name">Communication & Notices</span>
+              <span class="module-count">6 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Broadcast Announcements</span><br>Send notices to all users, specific roles, batches, or courses. Rich text + attachments. Schedule future announcements.<div class="feature-tags"><span class="ftag">Targeted</span><span class="ftag">Scheduled</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Email Campaigns</span><br>Send bulk emails to selected user groups. Template library, merge tags, open/click tracking.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">Noticeboard</span><br>Digital noticeboard on all user dashboards. Post circulars, events, opportunities, and policy updates.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--mgmt)"></span><div class="feature-text"><span class="feature-title">SMS / WhatsApp Alerts</span><br>Send critical alerts (low attendance, result publish, fee reminders) via SMS or WhatsApp (via integration).</div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: OUTSIDER -->
+    <!-- ============================================================ -->
+    <div id="page-outsider" class="page">
+      <div class="role-section" style="border-color:rgba(247,200,79,0.2)">
+        <div class="role-section-header" style="background:rgba(247,200,79,0.05)">
+          <div class="role-section-icon" style="background:rgba(247,200,79,0.1)">🌐</div>
+          <div class="role-section-meta">
+            <div class="role-section-name" style="color:var(--outsider)">Outsider / Guest / External User</div>
+            <div class="role-section-subtitle">Limited & Controlled Access</div>
+          </div>
+          <div class="role-badge" style="background:rgba(247,200,79,0.15);border:1px solid rgba(247,200,79,0.4);color:var(--outsider)">OUTSIDER</div>
+        </div>
+        <div class="role-section-body">
+          <p class="body">Outsiders are non-enrolled, external, or guest users. Their access is highly restricted by default and can be expanded for specific use cases: prospective students exploring the platform, auditors reviewing courses, parents monitoring progress, corporate clients accessing training, or industry mentors providing feedback.</p>
+
+          <div class="info-box yellow">
+            <div class="info-icon">⚠️</div>
+            <div class="info-text"><strong>All outsider access is opt-in:</strong> By default, outsiders see nothing. Each level of access must be explicitly granted by Admin or Management. Guest links can be time-limited or revoked at any time.</div>
+          </div>
+
+          <div class="module-block open">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">🌍</span>
+              <span class="module-name">Public / Guest Access</span>
+              <span class="module-count">7 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Public Course Catalog</span><br>Browse courses marked "Public" by the institution. View title, description, tutor info, syllabus, and reviews — without login.<div class="feature-tags"><span class="ftag">No Login</span><span class="ftag">Public Only</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Demo / Preview Content</span><br>Access designated preview materials for a course: first chapter, intro video, sample notes — as configured by instructor.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Demo Quiz</span><br>Take a sample quiz/assessment created for prospective students to experience the platform.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Inquiry & Enrollment Request</span><br>Submit an enrollment request or inquiry form. Receive automated response. Management reviews and grants full access.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Public Forum / Blog Read</span><br>Read public discussion threads or knowledge-base articles if the institution enables public forum mode.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">🔗</span>
+              <span class="module-name">Invited / Granted Access (Custom)</span>
+              <span class="module-count">9 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Parent Dashboard (Custom Role)</span><br>When explicitly set up, parents can view their child's attendance, marks, progress, and upcoming schedule. Read-only. No course interaction.<div class="feature-tags"><span class="ftag">Read-Only</span><span class="ftag">Child-Linked</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Corporate/Client Training Access</span><br>Grant external corporate employees access to specific courses. Separate billing, progress tracking, and completion certificates.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Auditor View</span><br>External academic auditors can be given read-only access to course content, assessments, and results for quality review.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Industry Mentor / Guest Lecturer</span><br>Industry professionals invited as guest lecturers can host a meet session, upload a resource, or participate in a forum thread — within defined boundaries.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Observer Mode for Meets</span><br>Invited outsiders can observe a live session as a silent participant (view-only, no mic/camera) if granted by host.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--outsider)"></span><div class="feature-text"><span class="feature-title">Time-Limited Guest Link</span><br>Admins can generate guest access links valid for X hours/days. Link auto-expires. No registration required for basic access.</div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: ADMIN -->
+    <!-- ============================================================ -->
+    <div id="page-admin" class="page">
+      <div class="role-section" style="border-color:rgba(196,122,247,0.2)">
+        <div class="role-section-header" style="background:rgba(196,122,247,0.05)">
+          <div class="role-section-icon" style="background:rgba(196,122,247,0.1)">⚙️</div>
+          <div class="role-section-meta">
+            <div class="role-section-name" style="color:var(--admin)">Super Admin</div>
+            <div class="role-section-subtitle">Full Platform Control</div>
+          </div>
+          <div class="role-badge" style="background:rgba(196,122,247,0.15);border:1px solid rgba(196,122,247,0.4);color:var(--admin)">SUPER ADMIN</div>
+        </div>
+        <div class="role-section-body">
+          <p class="body">Super Admin has unrestricted access to every module, feature, setting, and data record across the entire platform. They configure the system, define roles, manage tenants, handle billing, set global policies, and have override authority over every other role.</p>
+
+          <div class="module-block open">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">⚙️</span>
+              <span class="module-name">System Configuration</span>
+              <span class="module-count">12 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Global Module Toggle</span><br>Enable or disable any module platform-wide. Changes take effect immediately for all roles.<div class="feature-tags"><span class="ftag">Instant</span><span class="ftag">Global</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Role & Permission Manager</span><br>Create, edit, and delete roles. Assign permissions per module, per action (view/create/edit/delete), per scope (own/assigned/all).</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Branding & White-Label</span><br>Customize platform logo, color scheme, domain, email templates, and login page. Full white-label support.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Authentication Settings</span><br>Configure SSO (Google, Microsoft, SAML), 2FA requirements, session timeout, password policies, IP whitelist.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Integration Hub</span><br>Connect third-party services: Zoom, Google Meet, Razorpay/Stripe, AWS S3, SendGrid, Slack, LTI tools, and REST API webhooks.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Notification Rules Engine</span><br>Define when/how notifications are sent. Configure channels (email, SMS, in-app, WhatsApp) per event type and per user role.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">🏛️</span>
+              <span class="module-name">Multi-Tenant & Institution Management</span>
+              <span class="module-count">8 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Tenant Management</span><br>Create and manage multiple institution tenants on a single deployment. Each tenant is fully isolated: data, branding, roles, and settings.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Subscription & Billing</span><br>Manage subscription plans, feature limits per tenant, payment history, invoice generation, and trial periods.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Data Migration Tools</span><br>Import users, courses, and historical data via CSV/JSON. Migrate from other LMS platforms using standard LTI/SCORM formats.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Backup & Recovery</span><br>Schedule automated backups. Point-in-time recovery. Export full institutional data at any time.</div></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="module-block">
+            <div class="module-header" onclick="toggleModule(this)">
+              <span class="module-icon">🔍</span>
+              <span class="module-name">Audit & Security</span>
+              <span class="module-count">7 features</span>
+              <span class="module-chevron">▶</span>
+            </div>
+            <div class="module-body">
+              <ul class="feature-list">
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Full Audit Log</span><br>Every action on the platform is logged: who, what, when, from which IP. Tamper-evident, immutable audit trail.<div class="feature-tags"><span class="ftag">Immutable</span><span class="ftag">IP Tracked</span></div></div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Impersonation (Support Mode)</span><br>Temporarily view the platform as any user for debugging or support. All impersonation sessions are separately logged.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">Security Alerts</span><br>Real-time alerts for suspicious activity: multiple failed logins, unusual access patterns, bulk data exports, role escalations.</div></li>
+                <li class="feature-item"><span class="feature-dot" style="background:var(--admin)"></span><div class="feature-text"><span class="feature-title">GDPR / Data Compliance Tools</span><br>User data export, right-to-erasure workflow, consent management, data retention policies, and compliance report generation.</div></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- MODULE PAGES (abbreviated with key features) -->
+    <!-- ============================================================ -->
+
+    <div id="page-courses" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">📚 Module</div>
+        <div class="section-title">Courses &<br>Materials</div>
+        <div class="section-desc">The central learning repository. Every piece of educational content lives here — organized in courses, structured in chapters, and delivered through materials.</div>
+      </div>
+      <div class="info-box green"><div class="info-icon">✅</div><div class="info-text"><strong>SCORM & LTI Compatible:</strong> Import and export standard e-learning packages. Integrate external learning tools (Kahoot, Miro, H5P, etc.) via LTI 1.3.</div></div>
+      <h2 class="sub">Key Features</h2>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">🧩</span><div class="card-title">Course Builder</div><div class="card-desc">Drag-and-drop module and chapter organizer. Add sections, prerequisites, and unlock rules. Template library for quick setup.</div></div>
+        <div class="card"><span class="card-icon">📁</span><div class="card-title">Material Types</div><div class="card-desc">Videos (auto-transcoded), PDFs, PPTX, external links, code snippets, GitHub gists, embeds (YouTube, Notion, Figma).</div></div>
+        <div class="card"><span class="card-icon">🎯</span><div class="card-title">Learning Paths</div><div class="card-desc">Define linear or branching learning paths. Gate content behind score thresholds, completion %, or dates.</div></div>
+        <div class="card"><span class="card-icon">🔖</span><div class="card-title">Notes & Annotations</div><div class="card-desc">Students can highlight text, add timestamped video notes, and attach personal annotations to any material.</div></div>
+        <div class="card"><span class="card-icon">📜</span><div class="card-title">Certificates</div><div class="card-desc">Auto-generate and issue verifiable completion certificates with QR codes. Custom branding and co-branding support.</div></div>
+        <div class="card"><span class="card-icon">🌍</span><div class="card-title">Multi-Language</div><div class="card-desc">Course content in multiple languages. Subtitles for videos. UI available in 15+ languages.</div></div>
+      </div>
+      <h2 class="sub">Access by Role</h2>
+      <table class="perm-matrix"><thead><tr><th>Action</th><th style="color:var(--student)">Student</th><th style="color:var(--tutor)">Tutor</th><th style="color:var(--mgmt)">Mgmt</th><th style="color:var(--outsider)">Outsider</th><th style="color:var(--admin)">Admin</th></tr></thead><tbody>
+      <tr><td>Browse Catalog</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Public</td><td class="perm-check">✔</td></tr>
+      <tr><td>View Materials</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Preview</td><td class="perm-check">✔</td></tr>
+      <tr><td>Create Course</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-partial">⚬ Approve</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+      <tr><td>Upload Materials</td><td class="perm-cross">✗</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+      <tr><td>Manage Enrollment</td><td class="perm-cross">✗</td><td class="perm-partial">⚬ Own Course</td><td class="perm-check">✔</td><td class="perm-cross">✗</td><td class="perm-check">✔</td></tr>
+      </tbody></table>
+    </div>
+
+    <div id="page-attendance" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">📅 Module</div>
+        <div class="section-title">Attendance<br>System</div>
+        <div class="section-desc">Multi-modal attendance tracking — QR codes, geo-fencing, manual, biometric integration — with automated alerts, leave management, and compliance reporting.</div>
+      </div>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">📱</span><div class="card-title">QR & OTP Check-In</div><div class="card-desc">Tutors generate time-limited QR codes or OTP links. Students scan/click to mark attendance. Anti-proxy validation.</div></div>
+        <div class="card"><span class="card-icon">🌍</span><div class="card-title">Geo-Fence Attendance</div><div class="card-desc">Students must be within the defined geographic boundary (campus) to mark attendance. Admin sets allowed radius.</div></div>
+        <div class="card"><span class="card-icon">✋</span><div class="card-title">Manual Override</div><div class="card-desc">Tutors and management can manually correct any attendance record with reason logging and audit trail.</div></div>
+        <div class="card"><span class="card-icon">📊</span><div class="card-title">Reports & Heatmaps</div><div class="card-desc">Calendar heatmaps per student, subject-wise analytics, institution-wide trends, and exportable reports.</div></div>
+        <div class="card"><span class="card-icon">🔔</span><div class="card-title">Auto-Alerts</div><div class="card-desc">Configurable thresholds trigger alerts to student, tutor, parent, and management when attendance falls low.</div></div>
+        <div class="card"><span class="card-icon">📝</span><div class="card-title">Leave Management</div><div class="card-desc">Students apply for leave, attach documents. Approval workflow: tutor → management. Leave affects attendance report accordingly.</div></div>
+      </div>
+    </div>
+
+    <div id="page-assessments" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">📝 Module</div>
+        <div class="section-title">Assessments,<br>Tests & Quizzes</div>
+        <div class="section-desc">The most comprehensive assessment engine — covering every question type, robust anti-cheat, flexible grading, and rich result analytics.</div>
+      </div>
+      <h2 class="sub">Question Types Supported</h2>
+      <div class="tag-row">
+        <span class="tag">Single MCQ</span><span class="tag">Multi-select MCQ</span><span class="tag">True/False</span>
+        <span class="tag">Descriptive/Essay</span><span class="tag">Short Answer</span><span class="tag">Fill in the Blank</span>
+        <span class="tag">Code / Programming</span><span class="tag">Drag & Drop Order</span><span class="tag">Match Columns</span>
+        <span class="tag">Hotspot (Image)</span><span class="tag">File Upload</span><span class="tag">Video Response</span>
+        <span class="tag">Diagram Annotation</span><span class="tag">Likert Scale</span><span class="tag">Numeric Input</span>
+      </div>
+      <div class="cards-grid" style="margin-top:24px">
+        <div class="card"><span class="card-icon">🎲</span><div class="card-title">Randomization Engine</div><div class="card-desc">Random question draw from pools, option shuffling, and unique paper per student for anti-cheating.</div></div>
+        <div class="card"><span class="card-icon">🕐</span><div class="card-title">Flexible Timing</div><div class="card-desc">Global timer, section-wise timer, per-question timer. Grace period. Auto-submit on timeout.</div></div>
+        <div class="card"><span class="card-icon">🤖</span><div class="card-title">AI-Assisted Grading</div><div class="card-desc">AI pre-grades descriptive answers against rubrics. Tutor reviews and adjusts. Saves 80% grading time.</div></div>
+        <div class="card"><span class="card-icon">🔒</span><div class="card-title">Proctoring</div><div class="card-desc">Webcam monitoring, tab-switch detection, copy-paste disable, screen lock, IP restriction per exam.</div></div>
+        <div class="card"><span class="card-icon">📊</span><div class="card-title">Item Analysis</div><div class="card-desc">Post-exam analytics: question difficulty, discrimination index, distractor analysis, average score per question.</div></div>
+        <div class="card"><span class="card-icon">🔁</span><div class="card-title">Practice Mode</div><div class="card-desc">Unlimited practice attempts with instant feedback. Builds confidence before graded assessments.</div></div>
+      </div>
+    </div>
+
+    <div id="page-livetools" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">💻 Module</div>
+        <div class="section-title">Live Coding<br>& Labs</div>
+        <div class="section-desc">A full in-browser programming environment — individual sandboxes, collaborative labs, live instructor sessions, and auto-graded coding assessments.</div>
+      </div>
+      <h2 class="sub">Supported Languages & Environments</h2>
+      <div class="tag-row">
+        <span class="tag">Python</span><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Java</span>
+        <span class="tag">C / C++</span><span class="tag">C#</span><span class="tag">Go</span><span class="tag">Rust</span>
+        <span class="tag">Ruby</span><span class="tag">PHP</span><span class="tag">Swift</span><span class="tag">Kotlin</span>
+        <span class="tag">SQL (multiple)</span><span class="tag">R</span><span class="tag">Jupyter Notebook</span>
+        <span class="tag">HTML/CSS/JS</span><span class="tag">React</span><span class="tag">Bash/Shell</span>
+      </div>
+      <div class="cards-grid" style="margin-top:24px">
+        <div class="card"><span class="card-icon">🖥️</span><div class="card-title">Monaco IDE (VS Code Engine)</div><div class="card-desc">Full-featured editor with syntax highlighting, IntelliSense autocomplete, multi-file projects, and split-pane view.</div></div>
+        <div class="card"><span class="card-icon">🐳</span><div class="card-title">Sandboxed Execution</div><div class="card-desc">Each student gets an isolated Docker container. Run code safely with resource limits. No local install needed.</div></div>
+        <div class="card"><span class="card-icon">👥</span><div class="card-title">Real-Time Collaboration</div><div class="card-desc">Google Docs-style multi-user editing. See live cursors, edits, and selections. Great for pair programming and group projects.</div></div>
+        <div class="card"><span class="card-icon">📡</span><div class="card-title">Instructor Broadcast</div><div class="card-desc">Tutor's editor is broadcast to all students. Follow-mode: students see every keystroke in real time.</div></div>
+        <div class="card"><span class="card-icon">✅</span><div class="card-title">Auto Test Cases</div><div class="card-desc">Define public + hidden test cases per problem. Student submissions auto-run and scored. Partial marking supported.</div></div>
+        <div class="card"><span class="card-icon">💾</span><div class="card-title">Persistent Workspaces</div><div class="card-desc">Student work is auto-saved to personal workspaces. Resume from where they left off. Version history.</div></div>
+      </div>
+    </div>
+
+    <div id="page-meets" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">📹 Module</div>
+        <div class="section-title">Meets &<br>Live Sessions</div>
+        <div class="section-desc">Full-featured video conferencing built into the LMS — schedule, host, record, and share live class sessions, office hours, webinars, and institutional meetings.</div>
+      </div>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">📅</span><div class="card-title">Smart Scheduling</div><div class="card-desc">Link sessions to courses. Recurring schedule support. Auto-invites to enrolled students. Google/Outlook calendar sync.</div></div>
+        <div class="card"><span class="card-icon">🎥</span><div class="card-title">HD Video Conferencing</div><div class="card-desc">Browser-based WebRTC sessions. 1-on-1 to 500+ participants. Virtual background, noise suppression.</div></div>
+        <div class="card"><span class="card-icon">🖥️</span><div class="card-title">Screen Share + Whiteboard</div><div class="card-desc">Share full screen or app window. Built-in collaborative whiteboard with sticky notes, shapes, drawing tools.</div></div>
+        <div class="card"><span class="card-icon">👥</span><div class="card-title">Breakout Rooms</div><div class="card-desc">Split into groups instantly. Set timers. Instructor floats between rooms. Collaborative tools available in each room.</div></div>
+        <div class="card"><span class="card-icon">📼</span><div class="card-title">Recording & Transcripts</div><div class="card-desc">Auto-record all sessions. AI-generated searchable transcripts with speaker labels. Published directly to course materials.</div></div>
+        <div class="card"><span class="card-icon">📊</span><div class="card-title">Live Polls & Q&A</div><div class="card-desc">Launch polls, quizzes, and Q&A boards mid-session. Students upvote questions. Results shown live.</div></div>
+        <div class="card"><span class="card-icon">🔗</span><div class="card-title">External Meeting Integration</div><div class="card-desc">Optionally link Zoom, Google Meet, or MS Teams sessions. Meeting join links synced into course schedule.</div></div>
+        <div class="card"><span class="card-icon">📋</span><div class="card-title">Session Reports</div><div class="card-desc">Post-session report: attendance (who joined, duration), participation metrics, poll results, chat export.</div></div>
+      </div>
+    </div>
+
+    <div id="page-marks" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">🏆 Module</div>
+        <div class="section-title">Marks, Grades<br>& Results</div>
+        <div class="section-desc">Comprehensive grade management — weighted grade books, automated calculations, approval workflows, result publication, and rank generation.</div>
+      </div>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">📒</span><div class="card-title">Weighted Grade Book</div><div class="card-desc">Define grade components (quiz 20%, assignments 20%, mid 30%, final 30%). Automatic weighted total calculation per student.</div></div>
+        <div class="card"><span class="card-icon">📐</span><div class="card-title">Grading Scales</div><div class="card-desc">Configure percentage, letter grade (A/B/C), GPA scale (4.0/10.0), or custom grading schemes per course.</div></div>
+        <div class="card"><span class="card-icon">✅</span><div class="card-title">Approval Workflow</div><div class="card-desc">Grades submitted by tutors → reviewed by management → published to students. Full audit trail per grade change.</div></div>
+        <div class="card"><span class="card-icon">🏅</span><div class="card-title">Rank Lists</div><div class="card-desc">Auto-generate batch rank lists. Tie-breaking rules configurable. Publish or keep internal. Merit certificate generation.</div></div>
+        <div class="card"><span class="card-icon">📄</span><div class="card-title">Transcripts</div><div class="card-desc">Official formatted transcripts with institution seal, digital signature, and verifiable QR code. Student self-service download.</div></div>
+        <div class="card"><span class="card-icon">🔔</span><div class="card-title">Publication Control</div><div class="card-desc">Control exactly when and what students see. Publish score only, with feedback, with answers, or with full analytics.</div></div>
+        <div class="card"><span class="card-icon">⚖️</span><div class="card-title">Pass/Fail Rules</div><div class="card-desc">Define minimum pass marks per component and overall. Automatic pass/fail determination. Identifies re-sit eligible students.</div></div>
+        <div class="card"><span class="card-icon">📬</span><div class="card-title">Grade Appeal</div><div class="card-desc">Students submit appeal requests. Tutors review, annotate, and respond. Management has final override authority.</div></div>
+      </div>
+    </div>
+
+    <div id="page-communication" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">💬 Module</div>
+        <div class="section-title">Communication<br>Hub</div>
+        <div class="section-desc">All communication channels unified — announcements, direct messages, forums, notifications, email, and SMS — within a single platform.</div>
+      </div>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">📢</span><div class="card-title">Announcements</div><div class="card-desc">Broadcast to all, by role, by batch, or by course. Scheduled delivery. Rich text + attachments. Read-receipt tracking.</div></div>
+        <div class="card"><span class="card-icon">💬</span><div class="card-title">Direct Messaging</div><div class="card-desc">Secure 1-on-1 chat between any users within their allowed scope. File sharing, read receipts, message search.</div></div>
+        <div class="card"><span class="card-icon">🗨️</span><div class="card-title">Discussion Forums</div><div class="card-desc">Per-course threaded forums. Upvoting, instructor-pinned answers, Markdown support, code blocks, image embeds.</div></div>
+        <div class="card"><span class="card-icon">👥</span><div class="card-title">Group Channels</div><div class="card-desc">Create channels for batches, study groups, or clubs. Slack-like experience with threads and reactions.</div></div>
+        <div class="card"><span class="card-icon">🔔</span><div class="card-title">Smart Notifications</div><div class="card-desc">In-app, email, SMS, and push notifications. Users configure preferences. Admin defines what triggers notifications per event.</div></div>
+        <div class="card"><span class="card-icon">📧</span><div class="card-title">Email Integration</div><div class="card-desc">Platform emails via institution SMTP or SendGrid. Templates with merge tags. Bulk email campaigns from management.</div></div>
+      </div>
+    </div>
+
+    <div id="page-analytics" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">📊 Module</div>
+        <div class="section-title">Analytics &<br>Reports</div>
+        <div class="section-desc">Data-driven insights for every role — from individual student progress to institution-wide performance dashboards and exportable compliance reports.</div>
+      </div>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">📈</span><div class="card-title">Student Progress Analytics</div><div class="card-desc">Learning velocity, time-on-content, quiz performance trends, engagement scores, and predicted completion dates.</div></div>
+        <div class="card"><span class="card-icon">🗓️</span><div class="card-title">Attendance Analytics</div><div class="card-desc">Calendar heatmaps, streak tracking, absentee pattern detection, subject-wise and cohort-wise breakdowns.</div></div>
+        <div class="card"><span class="card-icon">📊</span><div class="card-title">Assessment Analytics</div><div class="card-desc">Score distributions, question-level difficulty analysis, time-taken analytics, and grade variance across batches.</div></div>
+        <div class="card"><span class="card-icon">👨‍🏫</span><div class="card-title">Instructor Analytics</div><div class="card-desc">Session regularity, grading turnaround time, student satisfaction, content engagement rates, and response times.</div></div>
+        <div class="card"><span class="card-icon">🏢</span><div class="card-title">Institutional Overview</div><div class="card-desc">Org-wide KPI dashboard: enrollment trends, pass rates, active users, module usage, and system health.</div></div>
+        <div class="card"><span class="card-icon">🛠️</span><div class="card-title">Custom Report Builder</div><div class="card-desc">Drag-and-drop report designer. Choose metrics, filters, date ranges, visualizations. Schedule auto-delivery to stakeholders.</div></div>
+      </div>
+    </div>
+
+    <div id="page-settings" class="page">
+      <div class="section-header">
+        <div class="section-eyebrow">🛠️ Module</div>
+        <div class="section-title">Settings &<br>Configuration</div>
+        <div class="section-desc">Every aspect of the platform is configurable — from global policies and notification rules to per-course settings and individual user preferences.</div>
+      </div>
+      <div class="cards-grid">
+        <div class="card"><span class="card-icon">🎨</span><div class="card-title">Branding & Theme</div><div class="card-desc">Logo, favicon, colors, fonts, login page, email templates, certificate design. Full white-label support.</div></div>
+        <div class="card"><span class="card-icon">🔒</span><div class="card-title">Security Settings</div><div class="card-desc">SSO, 2FA, password policy, session timeout, IP whitelist, login attempt limits, and anomaly detection rules.</div></div>
+        <div class="card"><span class="card-icon">🔔</span><div class="card-title">Notification Engine</div><div class="card-desc">Define trigger events, delivery channels (email/SMS/push/WhatsApp), templates, and recipients per notification type.</div></div>
+        <div class="card"><span class="card-icon">🔗</span><div class="card-title">Integrations</div><div class="card-desc">Connect Zoom, Google Meet, Teams, Razorpay, Stripe, S3, SendGrid, LTI tools, Slack, and custom webhooks.</div></div>
+        <div class="card"><span class="card-icon">🧩</span><div class="card-title">Module Toggle</div><div class="card-desc">Enable/disable any module globally or per role. Modules can be hidden entirely from navigation for specific roles.</div></div>
+        <div class="card"><span class="card-icon">📋</span><div class="card-title">Academic Calendar</div><div class="card-desc">Define terms, holidays, and exam periods. Drives automatic time-gating across assessments, attendance, and results.</div></div>
+        <div class="card"><span class="card-icon">👤</span><div class="card-title">User Preferences</div><div class="card-desc">Each user can set language, timezone, notification preferences, display name, and accessibility options.</div></div>
+        <div class="card"><span class="card-icon">💾</span><div class="card-title">Backup & Data</div><div class="card-desc">Automated backup scheduling, manual export of all data, GDPR data request handling, and data retention policies.</div></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main><!-- /main -->
+
+</div><!-- /app -->
+
+<script>
+  function showPage(id, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    if (navEl) navEl.classList.add('active');
+    const names = {
+      overview: 'Platform Overview', architecture: 'Architecture', access: 'Access Control',
+      student: 'Student Portal', tutor: 'Tutor Portal', management: 'Management Portal',
+      outsider: 'Outsider / Guest', admin: 'Super Admin',
+      courses: 'Courses & Materials', attendance: 'Attendance System',
+      assessments: 'Assessments & Tests', livetools: 'Live Coding & Labs',
+      meets: 'Meets & Sessions', marks: 'Marks & Results',
+      communication: 'Communication Hub', analytics: 'Analytics & Reports',
+      settings: 'Settings & Config'
+    };
+    document.getElementById('breadcrumb-text').textContent = names[id] || id;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function toggleModule(header) {
+    const block = header.closest('.module-block');
+    block.classList.toggle('open');
+  }
+
+  function filterRole(role, el) {
+    document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    // Visual feedback — could drive content filtering in a full app
+  }
+
+  // Stagger card animations
+  document.querySelectorAll('.card').forEach((c, i) => {
+    c.style.animationDelay = (i * 0.05) + 's';
+  });
+</script>
+</body>
+</html>
